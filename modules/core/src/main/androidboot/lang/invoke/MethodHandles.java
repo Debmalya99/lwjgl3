@@ -24,9 +24,6 @@
  */
 package java.lang.invoke;
 
-import java.lang.reflect.*;
-import java.util.*;
-
 public class MethodHandles {
 
     private MethodHandles() {

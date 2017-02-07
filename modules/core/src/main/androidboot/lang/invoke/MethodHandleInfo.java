@@ -25,7 +25,6 @@
 package java.lang.invoke;
 
 import java.lang.invoke.MethodHandles.*;
-import java.lang.reflect.*;
 
 public interface MethodHandleInfo {
 

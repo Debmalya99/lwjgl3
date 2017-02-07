@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
+    <mapping directory="D:/CLONES/assimp" vcs="Git" />
+    <mapping directory="D:/CLONES/bgfx" vcs="Git" />
+    <mapping directory="D:/CLONES/glfw" vcs="Git" />
+    <mapping directory="D:/CLONES/jemalloc" vcs="Git" />
+    <mapping directory="D:/CLONES/lmdb" vcs="Git" />
+    <mapping directory="D:/CLONES/nanovg" vcs="Git" />
+    <mapping directory="D:/CLONES/nativefiledialog" vcs="Git" />
+    <mapping directory="D:/CLONES/nuklear" vcs="Git" />
+    <mapping directory="D:/CLONES/openal-soft" vcs="Git" />
+    <mapping directory="D:/CLONES/openvr" vcs="Git" />
+    <mapping directory="D:/CLONES/stb" vcs="Git" />
+    <mapping directory="D:/CLONES/tinycc" vcs="Git" />
+    <mapping directory="D:/CLONES/tinyexr" vcs="Git" />
+    <mapping directory="D:/CLONES/tinyfiledialogs" vcs="Git" />
+    <mapping directory="D:/CLONES/xxHash" vcs="Git" />
+    <mapping directory="D:/CLONES/yoga" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../lwjgl3-CI/dyncall" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/modules/core/src/generated" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/wiki" vcs="Git" />
   </component>

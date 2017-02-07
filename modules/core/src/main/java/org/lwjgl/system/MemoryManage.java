@@ -75,24 +75,27 @@ final class MemoryManage {
         DebugAllocator(MemoryAllocator allocator) {
             this.allocator = allocator;
 
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                if (ALLOCATIONS.isEmpty()) {
-                    return;
-                }
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (ALLOCATIONS.isEmpty()) {
+                        return;
+                    }
 
-                for (Entry<Long, Allocation> entry : ALLOCATIONS.entrySet()) {
-                    Long       address    = entry.getKey();
-                    Allocation allocation = entry.getValue();
+                    for (Entry<Long, Allocation> entry : ALLOCATIONS.entrySet()) {
+                        Long       address    = entry.getKey();
+                        Allocation allocation = entry.getValue();
 
-                    DEBUG_STREAM.format(
-                        "[LWJGL] %d bytes leaked, thread %d (%s), address: 0x%s\n",
-                        allocation.size,
-                        allocation.threadId,
-                        THREADS.get(allocation.threadId),
-                        Long.toHexString(address).toUpperCase()
-                    );
-                    for (Object el : allocation.stackTrace) {
-                        DEBUG_STREAM.format("\tat %s\n", el.toString());
+                        DEBUG_STREAM.format(
+                            "[LWJGL] %d bytes leaked, thread %d (%s), address: 0x%s\n",
+                            allocation.size,
+                            allocation.threadId,
+                            THREADS.get(allocation.threadId),
+                            Long.toHexString(address).toUpperCase()
+                        );
+                        for (Object el : allocation.stackTrace) {
+                            DEBUG_STREAM.format("\tat %s\n", el.toString());
+                        }
                     }
                 }
             }));
@@ -228,7 +231,10 @@ final class MemoryManage {
         }
 
         private static <T> void aggregate(T t, long size, Map<T, AtomicLong> map) {
-            AtomicLong node = map.computeIfAbsent(t, k -> new AtomicLong());
+            AtomicLong node = map.computeIfAbsent(t, new Function<T, AtomicLong>() {
+                @Override
+                public AtomicLong apply(T k) { return new AtomicLong(); }
+            });
             node.set(node.get() + size);
         }
 
@@ -261,7 +267,10 @@ final class MemoryManage {
                     if (groupByThread) {
                         Map<Long, Map<StackTraceElement, AtomicLong>> mapThreadMethod = new HashMap<>();
                         for (Allocation allocation : ALLOCATIONS.values()) {
-                            Map<StackTraceElement, AtomicLong> mapMethod = mapThreadMethod.computeIfAbsent(allocation.threadId, k -> new HashMap<>());
+                            Map<StackTraceElement, AtomicLong> mapMethod = mapThreadMethod.computeIfAbsent(allocation.threadId, new Function<Long, Map<StackTraceElement, AtomicLong>>() {
+                                @Override
+                                public Map<StackTraceElement, AtomicLong> apply(Long k) {return new HashMap<>();}
+                            });
                             aggregate(allocation.getElements()[0], allocation.size, mapMethod);
                         }
 
@@ -288,7 +297,10 @@ final class MemoryManage {
                     if (groupByThread) {
                         Map<Long, Map<Allocation, AtomicLong>> mapThreadStackTrace = new HashMap<>();
                         for (Allocation allocation : ALLOCATIONS.values()) {
-                            Map<Allocation, AtomicLong> mapStackTrace = mapThreadStackTrace.computeIfAbsent(allocation.threadId, k -> new HashMap<>());
+                            Map<Allocation, AtomicLong> mapStackTrace = mapThreadStackTrace.computeIfAbsent(allocation.threadId, new Function<Long, Map<Allocation, AtomicLong>>() {
+                                @Override
+                                public Map<Allocation, AtomicLong> apply(Long k) {return new HashMap<>();}
+                            });
                             aggregate(allocation, allocation.size, mapStackTrace);
                         }
 

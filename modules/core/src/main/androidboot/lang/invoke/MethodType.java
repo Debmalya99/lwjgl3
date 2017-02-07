@@ -24,8 +24,6 @@
  */
 package java.lang.invoke;
 
-import java.util.*;
-
 public final class MethodType implements java.io.Serializable {
 
     private static final long serialVersionUID = 292L;
